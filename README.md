@@ -17,7 +17,7 @@ AI answers are hard to verify. This interface puts the evidence next to the answ
 - Switches to a "the documents don't clearly answer this" state below that line. The closest statements stay hidden until you ask to see them, and no passage is marked as a source until then.
 - Has a retrieval inspector: every passage the search returned, with its document, similarity score and how many statements used it.
 - Lets you upload `.txt` and `.pdf` files and remove them. An answer that was made before the documents changed is flagged as out of date.
-- Keeps the question in the address bar (`?q=` and `?k=`), so an answer can be shared as a link.
+- Keeps the question in the address bar (`?q=` and `?k=`), so an answer can be shared as a link. Each question is its own history entry, so the browser's Back and Forward buttons step between questions. Clear starts over.
 
 ## Run it
 
@@ -69,7 +69,7 @@ The interface only talks to an `Api` interface (`query`, `getIndex`, `listDocume
 ## Tests
 
 ```bash
-npm run test:run    # 52 tests
+npm run test:run    # 56 tests
 npm run typecheck
 npm run lint
 ```

@@ -21,11 +21,20 @@ function readUrl(): { q: string; k: number } {
   return { q: params.get('q') ?? '', k: Number.isInteger(k) && k >= 1 && k <= 10 ? k : 4 }
 }
 
-function writeUrl(q: string, k: number) {
+/** Each new question gets its own history entry, so Back and Forward step between questions. */
+function writeUrl(q: string | null, k: number) {
   const url = new URL(window.location.href)
-  url.searchParams.set('q', q)
-  url.searchParams.set('k', String(k))
-  window.history.replaceState(null, '', url)
+  if (q === null) {
+    url.searchParams.delete('q')
+    url.searchParams.delete('k')
+  } else {
+    url.searchParams.set('q', q)
+    url.searchParams.set('k', String(k))
+  }
+  if (url.search === window.location.search) return
+  const sameQuestion = new URLSearchParams(window.location.search).get('q') === q
+  if (sameQuestion) window.history.replaceState(null, '', url)
+  else window.history.pushState(null, '', url)
 }
 
 interface Selection {
@@ -63,13 +72,45 @@ export default function App() {
     },
   })
 
-  function runQuery(q: string, k: number) {
+  /** `updateUrl` is false when the address already holds the question (Back, Forward, a shared link). */
+  function runQuery(q: string, k: number, updateUrl = true) {
     const trimmed = q.trim()
     if (trimmed.length < 3) return
     setLastAsked({ q: trimmed, k })
-    writeUrl(trimmed, k)
+    if (updateUrl) writeUrl(trimmed, k)
     ask.mutate({ q: trimmed, k })
   }
+
+  function clear() {
+    setQuestion('')
+    setSelection(null)
+    setLastAsked(null)
+    setShowClosest(false)
+    ask.reset()
+    writeUrl(null, topK)
+    document.getElementById('question-input')?.focus()
+  }
+
+  // Back and Forward restore the question that was in the address at that point.
+  const onPopState = useRef<() => void>(() => {})
+  onPopState.current = () => {
+    const { q, k } = readUrl()
+    setQuestion(q)
+    setTopK(k)
+    if (q.trim().length >= 3) {
+      runQuery(q, k, false)
+    } else {
+      setSelection(null)
+      setLastAsked(null)
+      setShowClosest(false)
+      ask.reset()
+    }
+  }
+  useEffect(() => {
+    const handler = () => onPopState.current()
+    window.addEventListener('popstate', handler)
+    return () => window.removeEventListener('popstate', handler)
+  }, [])
 
   // A link with ?q=... answers straight away. The ref stops React's dev-mode double effect from asking twice.
   const startedFromUrl = useRef(false)
@@ -148,6 +189,8 @@ export default function App() {
               topK={topK}
               onTopKChange={setTopK}
               onAsk={() => runQuery(question, topK)}
+              onClear={clear}
+              canClear={question.length > 0 || result !== null || ask.isError}
               pending={ask.isPending}
               examples={EXAMPLES}
               onExample={(example) => {

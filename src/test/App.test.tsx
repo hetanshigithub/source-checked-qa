@@ -99,6 +99,75 @@ describe('asking a question', () => {
   })
 })
 
+describe('history and clearing', () => {
+  const Q1 = 'What is recall at k?'
+  const Q2 = 'Why can an inner-product index be used for cosine similarity?'
+
+  async function askTwo(user: ReturnType<typeof userEvent.setup>) {
+    await ask(user, Q1)
+    await screen.findByText(Q1, { selector: 'span' })
+    await user.clear(screen.getByLabelText('Your question'))
+    await ask(user, Q2)
+    await screen.findByText(Q2, { selector: 'span' })
+  }
+
+  const youAsked = (q: string) => screen.queryByText(q, { selector: 'section span' })
+
+  it('goes back to the previous question and forward again', async () => {
+    const { user } = renderApp()
+    await askTwo(user)
+    expect(new URLSearchParams(window.location.search).get('q')).toBe(Q2)
+
+    window.history.back()
+    await waitFor(() => expect(screen.getByLabelText('Your question')).toHaveValue(Q1))
+    await waitFor(() => expect(youAsked(Q1)).toBeInTheDocument())
+    expect(youAsked(Q2)).not.toBeInTheDocument()
+
+    window.history.forward()
+    await waitFor(() => expect(screen.getByLabelText('Your question')).toHaveValue(Q2))
+    await waitFor(() => expect(youAsked(Q2)).toBeInTheDocument())
+  })
+
+  it('returns to the empty page when going back past the first question', async () => {
+    const { user } = renderApp()
+    await ask(user, Q1)
+    await screen.findByRole('heading', { name: 'Answer' })
+
+    window.history.back()
+    await waitFor(() => expect(screen.queryByRole('heading', { name: 'Answer' })).not.toBeInTheDocument())
+    expect(screen.getByLabelText('Your question')).toHaveValue('')
+  })
+
+  it('does not add a history entry when the same question is asked again', async () => {
+    const { user } = renderApp()
+    await ask(user, Q1)
+    await screen.findByRole('heading', { name: 'Answer' })
+    const length = window.history.length
+    await user.click(screen.getByRole('button', { name: 'Ask' }))
+    await screen.findByRole('heading', { name: 'Answer' })
+    expect(window.history.length).toBe(length)
+  })
+
+  it('clears the question and the answer, and Back brings the answer back', async () => {
+    const { user } = renderApp()
+    expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument()
+
+    await ask(user, Q1)
+    await screen.findByRole('heading', { name: 'Answer' })
+    await user.click(screen.getByRole('button', { name: 'Clear' }))
+
+    expect(screen.getByLabelText('Your question')).toHaveValue('')
+    expect(screen.getByLabelText('Your question')).toHaveFocus()
+    expect(screen.queryByRole('heading', { name: 'Answer' })).not.toBeInTheDocument()
+    expect(new URLSearchParams(window.location.search).has('q')).toBe(false)
+    expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument()
+
+    window.history.back()
+    expect(await screen.findByRole('heading', { name: 'Answer' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Your question')).toHaveValue(Q1)
+  })
+})
+
 describe('when the documents do not answer', () => {
   it('says so, hides the statements and marks nothing until asked', async () => {
     const { user, container } = renderApp()

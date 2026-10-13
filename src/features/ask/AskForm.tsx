@@ -7,6 +7,8 @@ interface Props {
   topK: number
   onTopKChange: (value: number) => void
   onAsk: () => void
+  onClear: () => void
+  canClear: boolean
   pending: boolean
   examples: string[]
   onExample: (question: string) => void
@@ -19,12 +21,14 @@ export function AskForm({
   topK,
   onTopKChange,
   onAsk,
+  onClear,
+  canClear,
   pending,
   examples,
   onExample,
   showExamples,
 }: Props) {
-  const inputId = useId()
+  const inputId = 'question-input'
   const kId = useId()
   const canAsk = question.trim().length >= 3 && !pending
 
@@ -56,6 +60,15 @@ export function AskForm({
         >
           {pending ? 'Searching…' : 'Ask'}
         </button>
+        {canClear && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="rounded-md border border-line bg-surface px-5 py-3 text-lg font-semibold hover:border-ink"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm">
