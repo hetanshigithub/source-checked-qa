@@ -1,0 +1,187 @@
+[
+ {
+  "id": "q01",
+  "q": "How can analysts use AI to speed up first-pass research?",
+  "a": true
+ },
+ {
+  "id": "q02",
+  "q": "Why should AI outputs in finance be treated as decision-support signals?",
+  "a": true
+ },
+ {
+  "id": "q03",
+  "q": "Which three controls does successful AI adoption in finance depend on?",
+  "a": true
+ },
+ {
+  "id": "q04",
+  "q": "What is overreliance in AI-assisted investing?",
+  "a": true
+ },
+ {
+  "id": "q05",
+  "q": "Why is data leakage a risk for financial research?",
+  "a": true
+ },
+ {
+  "id": "q06",
+  "q": "In what situations does retrieval fail in a RAG system?",
+  "a": true
+ },
+ {
+  "id": "q07",
+  "q": "What governance practices are recommended for AI-assisted investment workflows?",
+  "a": true
+ },
+ {
+  "id": "q08",
+  "q": "How can retrieval quality be evaluated in a RAG system?",
+  "a": true
+ },
+ {
+  "id": "q09",
+  "q": "What does faithfulness measure for a generated answer?",
+  "a": true
+ },
+ {
+  "id": "q10",
+  "q": "What should a small benchmark set for evaluation contain?",
+  "a": true
+ },
+ {
+  "id": "q11",
+  "q": "What are the stages of a practical RAG pipeline?",
+  "a": true
+ },
+ {
+  "id": "q12",
+  "q": "What chunk size is a reasonable starting point for research workflows?",
+  "a": true
+ },
+ {
+  "id": "q13",
+  "q": "Why should a RAG system show the retrieved evidence to the user?",
+  "a": true
+ },
+ {
+  "id": "q14",
+  "q": "Why should an AI research assistant not hide its evidence?",
+  "a": true
+ },
+ {
+  "id": "q15",
+  "q": "In finance and strategy teams, what is research automation most effective as?",
+  "a": true
+ },
+ {
+  "id": "q16",
+  "q": "What is the difference between a flat index and an approximate index in FAISS?",
+  "a": true
+ },
+ {
+  "id": "q17",
+  "q": "Why can an inner-product index be used for cosine similarity?",
+  "a": true
+ },
+ {
+  "id": "q18",
+  "q": "Why must chunk text be saved alongside a FAISS index?",
+  "a": true
+ },
+ {
+  "id": "q19",
+  "q": "What happens to a saved index when the embedding model changes?",
+  "a": true
+ },
+ {
+  "id": "q20",
+  "q": "Why record the model name and vector dimension next to the index?",
+  "a": true
+ },
+ {
+  "id": "q21",
+  "q": "What is a weakness of fixed-size chunking?",
+  "a": true
+ },
+ {
+  "id": "q22",
+  "q": "How should the right chunk size be chosen?",
+  "a": true
+ },
+ {
+  "id": "q23",
+  "q": "What is semantic chunking?",
+  "a": true
+ },
+ {
+  "id": "q24",
+  "q": "How do grounding checks work?",
+  "a": true
+ },
+ {
+  "id": "q25",
+  "q": "When should a trustworthy RAG system decline to answer?",
+  "a": true
+ },
+ {
+  "id": "q26",
+  "q": "Why bake the embedding model into the container image?",
+  "a": true
+ },
+ {
+  "id": "q27",
+  "q": "What should a health endpoint of a retrieval service report?",
+  "a": true
+ },
+ {
+  "id": "q28",
+  "q": "What is recall at k?",
+  "a": true
+ },
+ {
+  "id": "q29",
+  "q": "How is mean reciprocal rank scored?",
+  "a": true
+ },
+ {
+  "id": "q30",
+  "q": "Why label evaluation evidence by its text instead of by chunk number?",
+  "a": true
+ },
+ {
+  "id": "u01",
+  "q": "What is the boiling point of tungsten?",
+  "a": false
+ },
+ {
+  "id": "u02",
+  "q": "Who won the 2018 FIFA World Cup?",
+  "a": false
+ },
+ {
+  "id": "u03",
+  "q": "How do I bake sourdough bread at home?",
+  "a": false
+ },
+ {
+  "id": "u04",
+  "q": "What is the capital city of Australia?",
+  "a": false
+ },
+ {
+  "id": "u05",
+  "q": "Explain how photosynthesis works in plants.",
+  "a": false
+ },
+ {
+  "id": "u06",
+  "q": "What was Apple's total revenue in 2023?",
+  "a": false
+ },
+ {
+  "id": "u07",
+  "q": "Which graphics card should I buy for training large neural networks?",
+  "a": false
+ }
+]
