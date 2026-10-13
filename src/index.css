@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/newsreader';
+@import '@fontsource-variable/schibsted-grotesk';
+
+/*
+  Colour system. The highlighter yellow is used for one thing only: the text a
+  statement was taken from. Blue marks things you can act on.
+*/
+:root {
+  --bg: #edf0f4;
+  --surface: #ffffff;
+  --surface-2: #f4f6f9;
+  --line: #c9d1dc;
+  --ink: #172033;
+  --muted: #566275;
+  --accent: #2450b8;
+  --mark: #ffe45c;
+  --warn: #7a4300;
+  --warn-bg: #fff0d1;
+  --danger: #9b1c1c;
+  --danger-bg: #fde8e8;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #10151f;
+    --surface: #171e2b;
+    --surface-2: #1d2536;
+    --line: #2e3850;
+    --ink: #e7ecf4;
+    --muted: #9daabe;
+    --accent: #8fb2ff;
+    --mark: #7a6600;
+    --warn: #ffc970;
+    --warn-bg: #3a2a0a;
+    --danger: #ffb4b4;
+    --danger-bg: #3d1717;
+    color-scheme: dark;
+  }
+}
+
+@theme {
+  --font-sans: 'Schibsted Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader Variable', Georgia, 'Times New Roman', serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-mark: var(--mark);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+/* The highlighter. Underlined as well, so it does not depend on colour alone. */
+mark.cite {
+  background: color-mix(in srgb, var(--mark) 55%, transparent);
+  color: var(--ink);
+  padding: 0.05em 0.12em;
+  margin: 0 -0.12em;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+mark.cite[data-active='true'] {
+  background: var(--mark);
+  text-decoration-thickness: 2px;
+  box-shadow: 0 0 0 2px var(--mark);
+}
+
+/* Reading text: the answer and the source passage are set like a document. */
+.reading {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+}
+
+/* Page layout. One column on small screens, with the source passage straight after the
+   answer. From 64rem the main content and the sticky source passage sit side by side. */
+.page {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+.col-main { display: contents; }
+.area-ask { order: 1; }
+.area-answer { order: 2; }
+.col-side { order: 3; }
+.area-inspector { order: 4; }
+.area-documents { order: 5; }
+
+@media (min-width: 64rem) {
+  .page {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .col-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 0;
+  }
+  .col-side {
+    order: 0;
+    position: sticky;
+    top: 1rem;
+  }
+  .col-side > aside {
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .meter-fill { transition: width 400ms ease-out; }
+}
