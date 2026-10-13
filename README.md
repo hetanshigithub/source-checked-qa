@@ -21,7 +21,7 @@ AI answers are hard to verify. This interface puts the evidence next to the answ
 
 ## Run it
 
-You need Node 20.19 or newer.
+You need Node 22.12 or newer. Use an even-numbered release (22 or 24); odd-numbered releases such as 25 are not supported by the test runner.
 
 ```bash
 npm install
