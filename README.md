@@ -4,6 +4,8 @@ Ask a question about your documents and check every part of the answer against t
 
 AI answers are hard to verify. This interface puts the evidence next to the answer: each statement is numbered, and selecting one highlights the exact sentence in its source passage. When the documents don't answer the question, it says so instead of showing a confident-looking guess.
 
+Live demo: https://source-checked-qa.vercel.app/
+
 ![Answer with the source passage highlighted](docs/answer.png)
 
 | When the documents don't answer | On a phone |
